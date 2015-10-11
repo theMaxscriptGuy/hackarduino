@@ -6,9 +6,9 @@ var sky_colors;
 Tasks = new Mongo.Collection("tasks");
 
 if (Meteor.isClient) {
-    
+
     //dividing the code in to parts:
-    
+
     //Subscription to the Collection which will fetch data from the serial port:
     Meteor.subscribe("tasks",
                    {
@@ -18,10 +18,13 @@ if (Meteor.isClient) {
     Meteor.setInterval(function()
                      {
                         //Meteor.call('start', function(err,response){return null;});
-                       Meteor.call('fetchSkyColor',Tasks.findOne().name,function(err,response){document.body.style.backgroundColor = response;})
+                       Meteor.call('fetchSkyColor',Tasks.findOne().name,
+                        function(err,response){
+                          document.body.style.backgroundColor = response;
+                        })
                         console.log(Tasks.findOne().name);
                      },100);
-    
+
     //Template events for the buttons which are showing up on the Client side:
     Template.Auto.events({
                          "click button": function()
@@ -31,7 +34,7 @@ if (Meteor.isClient) {
                          Meteor.call('command', function(err,response){return null;});
                          }
                          });
-    
+
     Template.Manual.events({
                            "click button": function()
                            {
@@ -40,7 +43,7 @@ if (Meteor.isClient) {
                            Meteor.call('command', function(err,response){return null;});
                            }
                            });
-    
+
     Template.AllOn.events({
                           "click button": function()
                           {
@@ -49,7 +52,7 @@ if (Meteor.isClient) {
                           Meteor.call('command', function(err,response){return null;});
                           }
                           });
-    
+
     Template.AllOff.events({
                            "click button": function()
                            {
@@ -58,7 +61,7 @@ if (Meteor.isClient) {
                            Meteor.call('command', function(err,response){return null;});
                            }
                            });
-    
+
     Template.LivOn.events({
                           "click button": function()
                           {
@@ -67,7 +70,7 @@ if (Meteor.isClient) {
                           Meteor.call('command', 'A1on', function(err,response){return null;});
                           }
                           });
-    
+
     Template.LivOff.events({
                            "click button": function()
                            {
@@ -82,7 +85,7 @@ if (Meteor.isClient) {
 
 
 if (Meteor.isServer) {
-    
+
     Meteor.startup(function () {
                    Meteor.methods({
                                   //calls to the arduino to stop:
@@ -101,14 +104,14 @@ if (Meteor.isServer) {
     sky_colors = JSON.parse(Assets.getText("json/sky.json"));
     console.log(sky_colors[135]);
     Tasks.remove({});
-    
+
     var sData = 0;
 
-    
+
     /*
         SERIAL PORT CONNECTION IS DONE HERE:
      */
-    
+
 //    //connect to serial port:
 //  var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodem1421", {
 //                                                baudrate: 9600,
@@ -121,7 +124,7 @@ if (Meteor.isServer) {
 //  Tasks.remove({});
 //  Tasks.upsert({_id: 0}, {name:data});
 //  }));
-    
+
 //faking the arduino output
     Meteor.setInterval(function()
                        {
