@@ -1,7 +1,13 @@
+   
 <head>
   <title>hackarduino</title>
 </head>
 
-<body>
+<body style="background-color:{{clr}}">
   <h1>Welcome to Meteor!</h1>
+  {{> color}}
 </body>
+
+<template name="color">
+    <p> new color is {{clr}} </p>
+    </template>
