@@ -16,8 +16,11 @@ Tasks = new Mongo.Collection("tasks");
 
 if (Meteor.isServer) {
   Tasks.remove({});
+    
+    var sData = 0;
+    
 //connect to serial port:
-  var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodemfd1311", {
+  var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodem1421", {
                                                 baudrate: 9600,
                                                 parser: SerialPort.parsers.readline('\r\n')
                                                });
@@ -28,6 +31,31 @@ if (Meteor.isServer) {
   Tasks.remove({});
   Tasks.upsert({_id: 0}, {name:data});
   }));
+
+
+    Meteor.setInterval(function(){
+                       sData +=1;
+                       if(sData % 2 == 0)
+    {
+        serialPort.write("A1on");
+    }
+    else
+    {
+        serialPort.write("A1off");
+    }
+                       console.log("SData = " + sData);
+                       },5000);
+    
+    
+    
+////faking the arduino output
+//    Meteor.setInterval(function()
+//                       {
+//                            sData+=1;
+//                            Tasks.remove({});
+//                            Tasks.upsert({_id: 0}, {name:sData});
+//                       },1000
+//                       );
 
   Meteor.publish("tasks", function () {
          return Tasks.find();
