@@ -1,14 +1,22 @@
+var sky_colors;
+
+Meteor.startup(function() {
+  sky_colors = JSON.parse(Assets.getText('sky_color_map.json'));
+});
+
 if (Meteor.isClient) {
 
 
-  Meteor.subscribe("tasks",
-  {
+  Meteor.subscribe("tasks", {
     onReady: function(){
-      console.log(Tasks.find().data);
-
+      var received_color = Tasks.find().data;
+      console.log(received_color);
+      Template.body.helpers({
+          bgcolor: received_color
+        });
     }
-  }
-)
+  });
+
   Meteor.setInterval(function()
   {
     //console.log("Hello World!");
@@ -19,17 +27,15 @@ Tasks = new Mongo.Collection("tasks");
 if (Meteor.isServer) {
   Tasks.remove({});
 
-  var sky_colors;
-  var fs = Npm.require('fs');
-    fs.readFileSync('/public/sky_color_map.json', 'utf8', function (err, data) {
-        if (err) {
-            console.log('Error: ' + err);
-            return;
-        }
+    // fs.readFileSync('/sky_color_map.json', 'utf8', function (err, data) {
+    //     if (err) {
+    //         console.log('Error: ' + err);
+    //         return;
+    //     }
 
-        sky_colors = JSON.parse(data);
-        console.log(sky_colors);
-    });
+    //     sky_colors = JSON.parse(data);
+    //     console.log(sky_colors);
+    // });
 
 //connect to serial port:
 //  var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodem1421", {
