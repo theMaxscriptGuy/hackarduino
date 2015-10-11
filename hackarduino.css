@@ -1,15 +1,18 @@
 /* CSS declarations go here */
 
 h1 {
-    font: 70px/68px 'Playfair Display', Georgia, serif;
+    font: 50px/54px 'Playfair Display', Georgia, serif;
     color: black;
     text-transform: uppercase;
     margin: 0 0 60px 20px;
 }
 
 button {
-    font: 16px/30px 'Fauna One', Georgia, serif;
-    max-width: 540px;
-    color: #33c;
-    margin: 0 0 12px 20px;
+    font: 14px/16px 'Unica One', Helvetica, Arial, sans-serif;
+    letter-spacing: .1em; color: #999;
+    text-transform: uppercase;
+    text-decoration: none;
+    width: 140px;
+    display: block;
+    margin: 20px;
 }

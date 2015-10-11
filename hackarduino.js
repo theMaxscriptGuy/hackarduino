@@ -14,16 +14,17 @@ if (Meteor.isClient) {
                    {
                         onReady: function(){console.log(Tasks.find().data);}
                    });
+
     //The timer check to constantly poll the data coming from the arduino: We will also control to bg color of the webpage.
-    Meteor.setInterval(function()
-                     {
-                        //Meteor.call('start', function(err,response){return null;});
-                       Meteor.call('fetchSkyColor',Tasks.findOne().name,
-                        function(err,response){
-                          document.body.style.backgroundColor = response;
-                        })
-                        console.log(Tasks.findOne().name);
-                     },100);
+    Meteor.setInterval(function() {
+      //Meteor.call('start', function(err,response){return null;});
+      Meteor.call('fetchSkyColor',Tasks.findOne().name,
+        function(err,response){
+          //document.body.style.backgroundColor = response;
+          $("body").css("background", response);
+        });
+      console.log(Tasks.findOne().name);
+    }, 100);
 
     //Template events for the buttons which are showing up on the Client side:
     Template.Auto.events({
@@ -129,6 +130,9 @@ if (Meteor.isServer) {
     Meteor.setInterval(function()
                        {
                             sData+=1;
+                            if (sData >= sky_colors.length) {
+                              sData = 0;
+                            }
                             Tasks.remove({});
                             Tasks.upsert({_id: 0}, {name:sData});
                        },200
