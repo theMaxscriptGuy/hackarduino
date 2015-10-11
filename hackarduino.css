@@ -5,6 +5,11 @@ h1 {
     color: black;
     text-transform: uppercase;
     margin: 0 0 60px 20px;
+    text-shadow:
+        1px 1px 0px rgb(255, 255, 255),
+        1px -1px 0px rgb(255, 255, 255),
+        -1px -1px 0px rgb(255, 255, 255),
+        -1px 1px 0px rgb(255, 255, 255);
 }
 
 button {
