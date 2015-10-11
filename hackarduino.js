@@ -111,37 +111,20 @@ if (Meteor.isServer) {
                                                });
 //Get the data from the port:
 
-  serialPort.on('data', Meteor.bindEnvironment(function(data) {
-  console.log('message ' + data);
-  Tasks.remove({});
-  Tasks.upsert({_id: 0}, {name:data});
-  }));
+//  serialPort.on('data', Meteor.bindEnvironment(function(data) {
+//  console.log('message ' + data);
+//  Tasks.remove({});
+//  Tasks.upsert({_id: 0}, {name:data});
+//  }));
     
-
-//perfectly workging:
-//    Meteor.setInterval(function(){
-//                       sData +=1;
-//                       if(sData % 2 == 0)
-//    {
-//        serialPort.write("A1on");
-//    }
-//    else
-//    {
-//        serialPort.write("A1off");
-//    }
-//                       console.log("SData = " + sData);
-//                       },5000);
-    
-    
-    
-////faking the arduino output
-//    Meteor.setInterval(function()
-//                       {
-//                            sData+=1;
-//                            Tasks.remove({});
-//                            Tasks.upsert({_id: 0}, {name:sData});
-//                       },1000
-//                       );
+//faking the arduino output
+    Meteor.setInterval(function()
+                       {
+                            sData+=1;
+                            Tasks.remove({});
+                            Tasks.upsert({_id: 0}, {name:sData});
+                       },1000
+                       );
 
   Meteor.publish("tasks", function () {
          return Tasks.find();
