@@ -12,18 +12,21 @@ if (Meteor.isClient) {
     //Subscription to the Collection which will fetch data from the serial port:
     Meteor.subscribe("tasks",
                    {
-                        onReady: function(){console.log(Tasks.find().data);}
+                        onReady: function(){console.log(Tasks.find().fetch());}
                    });
 
     //The timer check to constantly poll the data coming from the arduino: We will also control to bg color of the webpage.
     Meteor.setInterval(function() {
       //Meteor.call('start', function(err,response){return null;});
-      Meteor.call('fetchSkyColor',Tasks.findOne().name,
-        function(err,response){
-          //document.body.style.backgroundColor = response;
-          $("body").css("background", response);
-        });
-      console.log(Tasks.findOne().name);
+      var task = Tasks.findOne({ type: 'color' });
+      if (task) {
+        Meteor.call('fetchSkyColor',task.name,
+          function(err,response){
+            //document.body.style.backgroundColor = response;
+            $("body").css("background", response);
+          });
+        console.log(task.name);
+      }
     }, 100);
 
     //Template events for the buttons which are showing up on the Client side:
@@ -88,6 +91,8 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
 
     Meteor.startup(function () {
+                   Tasks.remove({});
+                   Tasks.upsert({type: 'color'}, {type: 'color', name:0});
                    Meteor.methods({
                                   //calls to the arduino to stop:
                                   command : function(data)
@@ -104,10 +109,6 @@ if (Meteor.isServer) {
 
     sky_colors = JSON.parse(Assets.getText("json/sky.json"));
     console.log(sky_colors[135]);
-    Tasks.remove({});
-
-    var sData = 0;
-
 
     /*
         SERIAL PORT CONNECTION IS DONE HERE:
@@ -123,10 +124,10 @@ if (Meteor.isServer) {
 
         serialPort.on('data', Meteor.bindEnvironment(function(data) {
             console.log('message ' + data);
-            Tasks.remove({});
-            Tasks.upsert({_id: 0}, {name:data});
+            Tasks.upsert({type:'color'}, {type: 'color', name:data});
         }));
     } else {
+        var sData = 0;
 
 //faking the arduino output
         Meteor.setInterval(function()
@@ -135,8 +136,7 @@ if (Meteor.isServer) {
                             if (sData >= sky_colors.length) {
                               sData = 0;
                             }
-                            Tasks.remove({});
-                            Tasks.upsert({_id: 0}, {name:sData});
+                            Tasks.upsert({type:'color'}, {type:'color', name:sData});
                        },200
                        );
     }
