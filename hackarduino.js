@@ -113,21 +113,23 @@ if (Meteor.isServer) {
         SERIAL PORT CONNECTION IS DONE HERE:
      */
 
+    if (Meteor.settings.useSerialPort) {
 //    //connect to serial port:
-//  var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodem1421", {
-//                                                baudrate: 9600,
-//                                                parser: SerialPort.parsers.readline('\r\n')
-//                                               });
+        var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodem1421", {
+            baudrate: 9600,
+            parser: SerialPort.parsers.readline('\r\n')
+        });
 //Get the data from the port:
 
-//  serialPort.on('data', Meteor.bindEnvironment(function(data) {
-//  console.log('message ' + data);
-//  Tasks.remove({});
-//  Tasks.upsert({_id: 0}, {name:data});
-//  }));
+        serialPort.on('data', Meteor.bindEnvironment(function(data) {
+            console.log('message ' + data);
+            Tasks.remove({});
+            Tasks.upsert({_id: 0}, {name:data});
+        }));
+    } else {
 
 //faking the arduino output
-    Meteor.setInterval(function()
+        Meteor.setInterval(function()
                        {
                             sData+=1;
                             if (sData >= sky_colors.length) {
@@ -137,6 +139,7 @@ if (Meteor.isServer) {
                             Tasks.upsert({_id: 0}, {name:sData});
                        },200
                        );
+    }
 
   Meteor.publish("tasks", function () {
          return Tasks.find();
