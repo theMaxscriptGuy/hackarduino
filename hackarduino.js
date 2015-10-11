@@ -88,7 +88,7 @@ if (Meteor.isServer) {
                                   //calls to the arduino to stop:
                                   command : function(data)
                                   {
-                                  serialPort.write(data);
+                                  //serialPort.write(data); //SERIAL PORT DATA WRITING TO ARDUINO.
                                   console.log(data);
                                   },
                                   fetchSkyColor : function(atLength)
@@ -103,12 +103,17 @@ if (Meteor.isServer) {
     Tasks.remove({});
     
     var sData = 0;
-   
-    //connect to serial port:
-  var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodem1421", {
-                                                baudrate: 9600,
-                                                parser: SerialPort.parsers.readline('\r\n')
-                                               });
+
+    
+    /*
+        SERIAL PORT CONNECTION IS DONE HERE:
+     */
+    
+//    //connect to serial port:
+//  var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodem1421", {
+//                                                baudrate: 9600,
+//                                                parser: SerialPort.parsers.readline('\r\n')
+//                                               });
 //Get the data from the port:
 
 //  serialPort.on('data', Meteor.bindEnvironment(function(data) {
@@ -123,7 +128,7 @@ if (Meteor.isServer) {
                             sData+=1;
                             Tasks.remove({});
                             Tasks.upsert({_id: 0}, {name:sData});
-                       },1000
+                       },200
                        );
 
   Meteor.publish("tasks", function () {
