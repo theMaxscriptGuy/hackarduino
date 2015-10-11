@@ -4,4 +4,34 @@
 
 <body>
   <h1>Welcome to Meteor!</h1>
+  {{> Auto}}
+  {{> Manual}}
+  {{> AllOn}}
+  {{> AllOff}}
+  {{> LivOn}}
+  {{> LivOff}}
 </body>
+
+<template name="Auto">
+    <button type="button">Auto</button>
+</template>
+
+<template name="Manual">
+    <button type="button">Manual</button>
+</template>
+
+<template name="AllOn">
+    <button type="button">All On</button>
+</template>
+
+<template name="AllOff">
+    <button type="button">All Off</button>
+</template>
+
+<template name="LivOn">
+    <button type="button">Living Area On</button>
+</template>
+
+<template name="LivOff">
+    <button type="button">Living Area Off</button>
+</template>
