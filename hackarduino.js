@@ -1,3 +1,7 @@
+var globalCommand = "A1off";
+var start,stop;
+var sky_colors;
+
 // the only colleciton which stores the values which are sent from arduino:
 Tasks = new Mongo.Collection("tasks");
 
@@ -14,6 +18,7 @@ if (Meteor.isClient) {
     Meteor.setInterval(function()
                      {
                         //Meteor.call('start', function(err,response){return null;});
+                       Meteor.call('fetchSkyColor',Tasks.findOne().name,function(err,response){document.body.style.backgroundColor = response;})
                         console.log(Tasks.findOne().name);
                      },100);
     
@@ -76,10 +81,6 @@ if (Meteor.isClient) {
 }
 
 
-
-var globalCommand = "A1off";
-var start,stop;
-
 if (Meteor.isServer) {
     
     Meteor.startup(function () {
@@ -89,11 +90,17 @@ if (Meteor.isServer) {
                                   {
                                   serialPort.write(data);
                                   console.log(data);
+                                  },
+                                  fetchSkyColor : function(atLength)
+                                  {
+                                  return sky_colors[atLength];
                                   }
                                   });
                    });
-    
-  Tasks.remove({});
+
+    sky_colors = JSON.parse(Assets.getText("json/sky.json"));
+    console.log(sky_colors[135]);
+    Tasks.remove({});
     
     var sData = 0;
    
