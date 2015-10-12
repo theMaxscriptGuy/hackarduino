@@ -16,19 +16,28 @@ if (Meteor.isClient) {
                    });
 
     //The timer check to constantly poll the data coming from the arduino: We will also control to bg color of the webpage.
-    Meteor.setInterval(function() {
-      //Meteor.call('start', function(err,response){return null;});
-      var task = Tasks.findOne({ type: 'color' });
-      if (task) {
-        Meteor.call('fetchSkyColor',task.name,
-          function(err,response){
-            //document.body.style.backgroundColor = response;
-            $("body").css("background", response);
-          });
-        console.log(task.name);
-      }
-    }, 100);
+    // Meteor.setInterval(function() {
+    //   //Meteor.call('start', function(err,response){return null;});
+    //   var task = Tasks.findOne({ type: 'color' });
+    //   if (task) {
+    //     Meteor.call('fetchSkyColor',task.name,
+    //       function(err,response){
+    //         //document.body.style.backgroundColor = response;
+    //         $("body").css("background", response);
+    //       });
+    //     console.log(task.name);
+    //   }
+    // }, 100);
 
+    //The timer check to constantly poll the data coming from the arduino: We will also control to bg color of the webpage.
+    Meteor.setInterval(function()
+                     {
+                        //Meteor.call('start', function(err,response){return null;});
+                       Meteor.call('fetchSkyColor',Tasks.findOne().name,function(err,response){document.body.style.backgroundColor = response;})
+                        console.log(Tasks.findOne().name);
+                     },100);
+
+    //Template events for the buttons which are showing up on the Client side:
     //Template events for the buttons which are showing up on the Client side:
     Template.Auto.events({
                          "click button": function()
@@ -52,8 +61,8 @@ if (Meteor.isClient) {
                           "click button": function()
                           {
                           //enter the main function here
-                          globalCommand = "AllOn";
-                          Meteor.call('command', function(err,response){return null;});
+                          globalCommand = "Allon";
+                          Meteor.call('command', 'Allon', function(err,response){return null;});
                           }
                           });
 
@@ -61,8 +70,8 @@ if (Meteor.isClient) {
                            "click button": function()
                            {
                            //enter the main function here
-                           globalCommand = "AllOff";
-                           Meteor.call('command', function(err,response){return null;});
+                           globalCommand = "Alloff";
+                           Meteor.call('command', 'Alloff', function(err,response){return null;});
                            }
                            });
 
@@ -70,8 +79,8 @@ if (Meteor.isClient) {
                           "click button": function()
                           {
                           //enter the main function here
-                          globalCommand = "A1on";
-                          Meteor.call('command', 'A1on', function(err,response){return null;});
+                          globalCommand = "Livon";
+                          Meteor.call('command', 'Livon', function(err,response){return null;});
                           }
                           });
 
@@ -79,10 +88,42 @@ if (Meteor.isClient) {
                            "click button": function()
                            {
                            //enter the main function here
-                           globalCommand = "A1off";
-                           Meteor.call('command','A1off', function(err,response){return null;});
+                           globalCommand = "Livoff";
+                           Meteor.call('command','Livoff', function(err,response){return null;});
                            }
                            });
+    Template.R1Off.events({
+                           "click button": function()
+                           {
+                           //enter the main function here
+                           globalCommand = "Livoff";
+                           Meteor.call('command','R1off', function(err,response){return null;});
+                           }
+                           });
+    Template.R1On.events({
+                          "click button": function()
+                          {
+                          //enter the main function here
+                          globalCommand = "Livoff";
+                          Meteor.call('command','R1on', function(err,response){return null;});
+                          }
+                          });
+    Template.R2Off.events({
+                          "click button": function()
+                          {
+                          //enter the main function here
+                          globalCommand = "Livoff";
+                          Meteor.call('command','R2off', function(err,response){return null;});
+                          }
+                          });
+    Template.R2On.events({
+                         "click button": function()
+                         {
+                         //enter the main function here
+                         globalCommand = "Livoff";
+                         Meteor.call('command','R2on', function(err,response){return null;});
+                         }
+                         });
 
 //isClient ends here
 }
@@ -97,7 +138,7 @@ if (Meteor.isServer) {
                                   //calls to the arduino to stop:
                                   command : function(data)
                                   {
-                                  //serialPort.write(data); //SERIAL PORT DATA WRITING TO ARDUINO.
+                                  serialPort.write(data); //SERIAL PORT DATA WRITING TO ARDUINO.
                                   console.log(data);
                                   },
                                   fetchSkyColor : function(atLength)
@@ -113,10 +154,11 @@ if (Meteor.isServer) {
     /*
         SERIAL PORT CONNECTION IS DONE HERE:
      */
-
+console.log(Meteor.settings.useSerialPort);
     if (Meteor.settings.useSerialPort) {
 //    //connect to serial port:
-        var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodem1421", {
+console.log("Using Serial Port");
+        var serialPort = new SerialPort.SerialPort("/dev/tty.usbmodemfa1311", {
             baudrate: 9600,
             parser: SerialPort.parsers.readline('\r\n')
         });
@@ -127,6 +169,7 @@ if (Meteor.isServer) {
             Tasks.upsert({type:'color'}, {type: 'color', name:data});
         }));
     } else {
+      console.log("Not Using Serial Port");
         var sData = 0;
 
 //faking the arduino output

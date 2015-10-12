@@ -1,7 +1,7 @@
 <head>
   <title>hackarduino</title>
-
   <link href='https://fonts.googleapis.com/css?family=Fauna+One|Oleo+Script|Fugaz+One|Monda|Unica+One|Alegreya:400italic,400|Abril+Fatface|Vollkorn' rel='stylesheet' type='text/css'>
+  <!--
     <script src="gl-matrix.js"></script>
     <script src="phoria-util.js"></script>
     <script src="phoria-entity.js"></script>
@@ -10,6 +10,7 @@
     <script src="phoria-view.js"></script>
     <script src='dat.gui.min.js'></script>
     <script src='cube-rotate.js'></script>
+  -->
 </head>
 
 <body>
@@ -21,11 +22,17 @@
     {{> AllOff}}
     {{> LivOn}}
     {{> LivOff}}
+    {{> R1On}}
+    {{> R1Off}}
+    {{> R2On}}
+    {{> R2Off}}
   </div>
-  <div id="model" style="float: left;">
+
+<!--  <div id="model" style="float: left;">
     <canvas id="canvas" width="400" height="300" style="background-color: #eee"></canvas>
     <div style="margin-top: -25px; margin-left: 300px; position: absolute" id="picked">Selected: [none]</div>
   </div>
+-->
 
 </body>
 
@@ -51,4 +58,20 @@
 
 <template name="LivOff">
     <button type="button">Living Area Off</button>
+</template>
+
+<template name="R1On">
+    <button type="button">Room1 On</button>
+</template>
+
+<template name="R1Off">
+    <button type="button">Room1 Off</button>
+</template>
+
+<template name="R2On">
+    <button type="button">Room2 On</button>
+</template>
+
+<template name="R2Off">
+    <button type="button">Room2 Off</button>
 </template>
