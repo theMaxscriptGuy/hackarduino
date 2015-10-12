@@ -1,10 +1,10 @@
 /* CSS declarations go here */
 
 h1 {
-    font: 50px/54px 'Unica One', Georgia, serif;
+    font: 50px/48px 'Unica One', Georgia, serif;
     color: white;
     text-transform: uppercase;
-    margin: 0 0 60px 20px;
+    margin: 20px 0 20px 20px;
     text-shadow:
         1px 1px 0px rgb(255, 255, 255),
         1px -1px 0px rgb(255, 255, 255),

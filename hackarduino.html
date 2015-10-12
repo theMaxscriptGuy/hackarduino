@@ -2,17 +2,31 @@
   <title>hackarduino</title>
 
   <link href='https://fonts.googleapis.com/css?family=Fauna+One|Oleo+Script|Fugaz+One|Monda|Unica+One|Alegreya:400italic,400|Abril+Fatface|Vollkorn' rel='stylesheet' type='text/css'>
-
+    <script src="gl-matrix.js"></script>
+    <script src="phoria-util.js"></script>
+    <script src="phoria-entity.js"></script>
+    <script src="phoria-scene.js"></script>
+    <script src="phoria-renderer.js"></script>
+    <script src="phoria-view.js"></script>
+    <script src='dat.gui.min.js'></script>
+    <script src='cube-rotate.js'></script>
 </head>
 
 <body>
   <h1>Welcome to<br/> Hackarduino!</h1>
-  {{> Auto}}
-  {{> Manual}}
-  {{> AllOn}}
-  {{> AllOff}}
-  {{> LivOn}}
-  {{> LivOff}}
+  <div id="buttons" style="float: left;">
+    {{> Auto}}
+    {{> Manual}}
+    {{> AllOn}}
+    {{> AllOff}}
+    {{> LivOn}}
+    {{> LivOff}}
+  </div>
+  <div id="model" style="float: left;">
+    <canvas id="canvas" width="400" height="300" style="background-color: #eee"></canvas>
+    <div style="margin-top: -25px; margin-left: 300px; position: absolute" id="picked">Selected: [none]</div>
+  </div>
+
 </body>
 
 <template name="Auto">
